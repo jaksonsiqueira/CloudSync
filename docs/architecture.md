@@ -23,9 +23,20 @@
 
 - **Interface:** PySide6 com Qt Widgets.
 - **Persistência:** SQLite via `sqlite3` da biblioteca padrão; `platformdirs` determina caminhos de dados do usuário.
-- **Drive/OAuth (etapa futura):** `google-api-python-client`, `google-auth` e `google-auth-oauthlib`; token de atualização protegido via `keyring` no Windows.
+- **Drive/OAuth:** `cloud.auth` implementa OAuth desktop por navegador e armazena tokens via `keyring`; `cloud.drive` encapsula a Drive API v3 e não depende do banco ou da interface.
 - **Agendamento (etapa futura):** APScheduler executado no processo do aplicativo.
 - **Logs:** módulo `logging` da biblioteca padrão, com rotação de arquivos.
+
+## Integração Google Drive
+
+- `cloud.auth.GoogleDriveAuth` conecta, carrega, renova e desconecta credenciais OAuth.
+- `cloud.auth.KeyringTokenStore` guarda o JSON de tokens no cofre do sistema operacional; o arquivo OAuth de aplicativo fica separado dos tokens em `%LOCALAPPDATA%\CloudSync\google-oauth-client.json`.
+- `cloud.drive.GoogleDriveClient` fornece verificação de conexão, informações básicas da conta, paginação de itens filhos, busca de pastas por nome e criação de pastas.
+- `cloud.drive.DriveItem` representa metadados Drive com ID, nome, MIME type, pastas pai e link opcional.
+- `cloud.errors` define erros de integração sem expor respostas sensíveis para a interface/CLI.
+- `__main__.py` fornece comandos de conexão e diagnóstico sem inicializar nem depender do SQLite.
+
+O escopo atual é `drive`, necessário para pesquisar todo o Drive e criar itens em diretórios existentes. É um escopo amplo; a distribuição pública deverá avaliar verificação OAuth e possível redução de escopo quando houver um seletor de arquivos/pastas.
 
 ## Dados persistidos
 

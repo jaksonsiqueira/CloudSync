@@ -44,6 +44,7 @@ temp/
 !.env.example
 credentials.json
 client_secret*.json
+google-oauth-client.json
 token.json
 token*.json
 secrets.*

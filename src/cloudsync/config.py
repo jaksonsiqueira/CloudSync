@@ -11,6 +11,7 @@ class AppPaths:
     data_dir: Path
     database: Path
     log_dir: Path
+    google_client_secrets: Path
 
 
 def get_app_paths() -> AppPaths:
@@ -18,5 +19,10 @@ def get_app_paths() -> AppPaths:
     data_dir = user_data_path("CloudSync", appauthor=False, ensure_exists=True)
     log_dir = data_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    return AppPaths(data_dir=data_dir, database=data_dir / "cloudsync.sqlite3", log_dir=log_dir)
+    return AppPaths(
+        data_dir=data_dir,
+        database=data_dir / "cloudsync.sqlite3",
+        log_dir=log_dir,
+        google_client_secrets=data_dir / "google-oauth-client.json",
+    )
 
